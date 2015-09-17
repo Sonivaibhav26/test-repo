@@ -1,2 +1,1 @@
-# test-repo
-TEsting
+You can simply download the file and open it as an html in any browser.
