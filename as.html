@@ -1,0 +1,138 @@
+<html>
+<head>
+<style>
+select{
+width:13em;
+padding:1em;
+}
+</style>
+
+</head>
+<body>
+  <div><select id="Fee"><option disabled>FEE</option></select></div>
+  <div><select id="Nationality"><option disabled>NATIONALITY</option></select></div>
+  <div><select id="Course"><option disabled>COURSE</option></select></div>
+  <div><select id="Level"><option disabled>LEVEL</option></select></div><hr>
+  <div>Total Fee: <span id="amt">N.A.</span></div>
+</body>
+
+<script> 
+var db={
+	"Exam Fee":{
+		"INDIAN":{
+			"ALL_COURSES":{
+				"ALL_LEVEL":{
+					"amount":400
+				}
+			}
+		},
+		"FOREIGN":{
+			"ALL_COURSES":{
+				"ALL_LEVEL":{
+					"amount":100
+				}
+			}
+		},
+		"NRI":{
+			"ALL_COURSES":{
+				"ALL_LEVEL":{
+					"amount":600
+				}
+			}
+		},
+		"SAARC":{
+			"ALL_COURSES":{
+				"ALL_LEVEL":{
+					"amount":600
+				}
+			}
+		}
+	},
+	"Applicaton Fee":{
+		"INDIAN":{
+			"ALL_COURSES":{
+				"UG":{"amount":200},
+				"UG-DIPLOMA":{"amount":300},
+				"PG":{"amount":500}
+			}
+		},
+		"FOREIGN":{
+			"ALL_COURSES":{
+				"UG":{"amount":400},
+				"UG-DIPLOMA":{"amount":400},
+				"PG":{"amount":700}
+			}
+		}
+	}
+};
+
+
+
+
+var f=document.getElementById('Fee');
+var n=document.getElementById('Nationality');
+var c=document.getElementById('Course');
+var l=document.getElementById('Level');
+
+function reset(a){
+switch(a){
+case undefined:f.innerHTML='<option disabled>FEE</option>';
+case f:n.innerHTML='<option disabled>NATIONALITY</option>';
+case n:c.innerHTML='<option disabled>COURSE</option>';
+case c:l.innerHTML='<option disabled>LEVEL</option>';
+}
+document.getElementById('amt').textContent='N.A.';
+}
+
+
+document.body.onload=function(e){
+  var f1=Object.keys(db);
+  var o=f;reset(f);
+  o.innerHTML='<option disabled>Select Fee</option>';
+  for(var i=0;i<f1.length;i++){
+     o.innerHTML+='<option>'+f1[i]+'</option>';
+  }
+o.selectedIndex=0;
+};
+
+f.onchange=function(e){
+  var n1=Object.keys(db[this.value]);
+  var o=n;reset(n);
+  o.innerHTML='<option disabled>Select Nationality</option>';
+  for(var i=0;i<n1.length;i++){
+     o.innerHTML+='<option>'+n1[i]+'</option>';
+  }
+o.selectedIndex=0;
+};
+
+n.onchange=function(e){
+  var c1=Object.keys(db[f.value][this.value]);
+  if(c1[0]=='ALL_COURSES'){c1=['Medical','Dental','Ayurveda'];}
+  var o=c;reset(c);
+  o.innerHTML='<option disabled>Select Course</option>';
+  for(var i=0;i<c1.length;i++){
+     o.innerHTML+='<option>'+c1[i]+'</option>';
+  }
+o.selectedIndex=0;
+};
+
+c.onchange=function(e){
+  var l1=Object.keys(db[f.value][n.value][this.value] || db[f.value][n.value]['ALL_COURSES'] );
+  if(l1[0]=='ALL_LEVEL'){l1=['UG','PG','Diploma','Ph.D'];}
+  var o=l;
+  o.innerHTML='<option disabled>Select Level</option>';
+  for(var i=0;i<l1.length;i++){
+     o.innerHTML+='<option>'+l1[i]+'</option>';
+  }
+o.selectedIndex=0;
+};
+
+l.onchange=function(e){
+   var cor= (db[f.value][n.value][c.value] || db[f.value][n.value]['ALL_COURSES']);
+   var lev= (cor[this.value] || cor['ALL_LEVEL']);
+   var amt= lev['amount'];
+   document.getElementById('amt').textContent=amt;
+};
+
+</script>
+</html>
